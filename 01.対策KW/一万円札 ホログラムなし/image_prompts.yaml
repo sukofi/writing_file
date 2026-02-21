@@ -1,0 +1,95 @@
+# 一万円札 ホログラムなし｜h2用画像プロンプト（Imagen 3向け）
+# Imagen 3 高品質化: マクロレンズ・構図・照明を具体指定 / アスペクト比: 16:9
+# 商標・著作権: 実物の精密再現は避け、質感・シルエット・概念で伝える
+# 重要: 10000円札のみ指定。1000円札・5000円札・ドル札にならないよう明記
+
+prompts:
+  - id: img_01
+    h2: "ホログラムのない一万円札とは｜D号券（旧紙幣）の特徴"
+    alt: "ホログラムのない一万円札 D号券の特徴"
+    yaml: |
+      subject: Close-up macro shot of Japanese 10000 yen banknote paper texture, ten thousand yen note, fine fiber detail visible
+      atmosphere: Professional, trustworthy, historical authenticity
+      composition: 85mm macro lens, shallow depth of field, soft key light from upper left 45 degrees
+      elements: Crisp paper edge in focus, subtle green-tinted paper tone, soft bokeh background, warm neutral studio backdrop
+      style: Product photography, magazine quality, precise focusing on texture
+      avoid: Exact reproduction of banknote design, visible serial numbers, identifiable security features
+
+  - id: img_02
+    h2: "ホログラムのない一万円札は偽札？本物との見分け方"
+    alt: "ホログラムなしの一万円札 偽札との見分け方"
+    yaml: |
+      subject: Hands holding Japanese 10000 yen banknote against soft diffused backlight, ten thousand yen note, translucent paper effect
+      atmosphere: Reassuring, educational, trust-building
+      composition: 50mm lens, close-up from above, rim lighting emphasizing paper translucency
+      elements: Fine paper fiber texture visible through light, professional examination gesture, neutral gray background
+      style: Documentary photography, natural hand position, clean and trustworthy
+      avoid: Actual watermark design, identifiable security features
+
+  - id: img_03
+    h2: "ホログラムなしの一万円札は使える？ATM・コンビニ・銀行での利用"
+    alt: "ホログラムなしの一万円札 使える場所"
+    yaml: |
+      subject: Abstract representation of Japanese 10000 yen banknote edge near generic ATM slot, ten thousand yen
+      atmosphere: Convenient, reliable, accessible
+      composition: 35mm lens, low angle close-up, soft ambient ceiling lighting
+      elements: Clean metallic ATM surface, paper currency corner visible, minimal interface, neutral blue-gray tones
+      style: Clean corporate photography, no identifiable branding
+      avoid: Specific bank logos, identifiable ATM brand, full banknote
+
+  - id: img_04
+    h2: "ホログラムなしの一万円札の価値と買取相場"
+    alt: "ホログラムなしの一万円札 買取相場"
+    yaml: |
+      subject: Expert hands with white cotton gloves examining Japanese 10000 yen banknote on white backdrop, ten thousand yen note
+      atmosphere: Transparent, fair, premium appraisal service
+      composition: 70mm lens, top-down angle, soft diffused studio lighting from both sides
+      elements: Loupe or magnifier in hand, clean white desk surface, professional workspace
+      style: High-end product appraisal photography, sharp focus on paper quality
+      avoid: Price tags, specific brand elements, visible serial numbers
+
+  - id: img_05
+    h2: "ホログラムなしの一万円札が高く売れる条件"
+    alt: "ホログラムなしの一万円札 高く売れる条件"
+    yaml: |
+      subject: Pristine Japanese 10000 yen banknote inside clear archival Mylar sleeve, ten thousand yen note, collector-grade
+      atmosphere: Valuable, well-cared-for, premium preservation
+      composition: 90mm macro lens, straight-on angle, soft front lighting to minimize glare
+      elements: Perfect sharp paper edges, archival holder reflection, warm cream-toned background
+      style: Luxury collectible photography, crisp and detailed
+      avoid: Visible serial numbers, full banknote design reproduction
+
+  - id: img_06
+    h2: "紙幣の査定・買取は『買取大吉』にお任せ"
+    alt: "紙幣の査定・買取は買取大吉にお任せ"
+    use_fixed: true  # 00.共通素材/daikichi_kyusyu.png を毎回使用
+    yaml: |
+      subject: Welcoming professional buyback service, expert consultation in clean modern space
+      atmosphere: Friendly, trustworthy, premium and accessible
+      composition: Inviting close-up of professional service counter with warm lighting
+      elements: Clean counter surface, soft warm lighting, professional atmosphere, refined Japanese aesthetic, no text or logos
+      style: Photorealistic, studio lighting, premium retail service
+      avoid: Brand logos, specific store signage, text overlays
+
+  - id: img_07
+    h2: "【Q&A】一万円札（ホログラムなし）に関するよくある質問"
+    alt: "一万円札 ホログラムなし よくある質問"
+    currency_mode: false  # Q&A画像は対策KWを含めない
+    yaml: |
+      subject: Two people in friendly Q&A consultation, one asking question with hand gesture, other nodding helpfully
+      atmosphere: Helpful, informative, reassuring, professional service
+      composition: 50mm lens, medium close-up, soft diffused lighting from window side
+      elements: Clean modern desk, question-and-answer visual metaphor, professional but approachable
+      style: Corporate photography, warm tones, sharp focus on interaction
+      avoid: Visible text, specific product, brand, or currency in frame
+
+  - id: img_08
+    h2: "まとめ：ホログラムなしの一万円札はD号券で本物｜納得の使い方・売り方を"
+    alt: "まとめ ホログラムなしの一万円札"
+    yaml: |
+      subject: Japanese 10000 yen banknotes neatly stacked and arranged on white surface, ten thousand yen notes
+      atmosphere: Conclusive, reassuring, empowered decision made
+      composition: 60mm lens, slight overhead angle, soft key light from left
+      elements: Neat symmetrical arrangement, premium paper texture, warm neutral tones, professional closure
+      style: Editorial photography, clean and complete, magazine quality
+      avoid: Specific designs, visible text, serial numbers
