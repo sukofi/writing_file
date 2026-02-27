@@ -35,7 +35,7 @@ def load_config(kw_dir: Path) -> tuple[Path, Path, Path]:
     return html_file, prompts_file, images_dir
 
 
-def yaml_to_prompt(yaml_text: str, currency_mode: bool = True) -> str:
+def yaml_to_prompt(yaml_text: str, currency_mode: bool = True, no_money: bool = False) -> str:
     """YAML形式のプロンプトをImagen用の英文プロンプトに変換"""
     lines = yaml_text.strip().split("\n")
     parts = []
@@ -55,6 +55,17 @@ def yaml_to_prompt(yaml_text: str, currency_mode: bool = True) -> str:
         if currency_mode
         else ""
     )
+    # 紙幣禁止モード: お金・紙幣を一切含めない（生成精度のため）
+    no_money_suffix = (
+        " The image must NOT contain any money, cash, banknotes, currency, paper money, coins, or bills. "
+        if no_money
+        else ""
+    )
+    suffix = (
+        f"{no_money_suffix}"
+        "Do not reproduce any real currency design, logos, or identifiable security features. "
+        "Abstract representation only."
+    )
     # Imagen 3 高品質化: 4K, HDR, professional photography, sharp focus（公式ガイド準拠）
     quality = "4K HDR professional photograph, sharp focus, high detail, controlled studio lighting, "
     return (
@@ -62,8 +73,7 @@ def yaml_to_prompt(yaml_text: str, currency_mode: bool = True) -> str:
         f"16:9 aspect ratio. "
         f"{prefix}"
         f"{base} "
-        f"Do not reproduce any real currency design, logos, or identifiable security features. "
-        f"Abstract representation only."
+        f"{suffix}"
     )
 
 
@@ -180,7 +190,8 @@ def main():
         pid = item["id"]
         alt = item["alt"]
         item_currency = item.get("currency_mode", currency_mode)
-        prompt_en = yaml_to_prompt(item["yaml"], item_currency)
+        no_money = not item_currency  # currency_mode: false のとき紙幣を一切含めない
+        prompt_en = yaml_to_prompt(item["yaml"], item_currency, no_money=no_money)
         output_path = images_dir / f"{pid}.png"
 
         print(f"\n[{i+1}/{len(prompts)}] {item['h2'][:40]}...", flush=True)
