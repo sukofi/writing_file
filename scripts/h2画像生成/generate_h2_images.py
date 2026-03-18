@@ -77,8 +77,51 @@ def yaml_to_prompt(yaml_text: str, currency_mode: bool = True, no_money: bool = 
     )
 
 
+def generate_with_gemini_api(prompt: str, output_path: Path) -> bool:
+    """Gemini API (google-genai) で画像生成"""
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        return False
+
+    try:
+        from google import genai
+        client = genai.Client(api_key=api_key)
+
+        for model_id in (
+            "imagen-3.0-generate-001",
+            "imagen-4.0-generate-001",
+            "imagen-3.0-fast-generate-001",
+            "imagen-2.0-generate-001",
+        ):
+            try:
+                response = client.models.generate_images(
+                    model=model_id,
+                    prompt=prompt,
+                    config={
+                        'aspect_ratio': '16:9',
+                        'number_of_images': 1,
+                    }
+                )
+                if response and response.generated_images:
+                    out = output_path.with_suffix(".png")
+                    with open(out, "wb") as f:
+                        f.write(response.generated_images[0].image.image_bytes)
+                    return True
+            except Exception as ex:
+                if "404" not in str(ex):  # Not found error is common, other errors might be more serious
+                    print(f"    {model_id}: {ex}", flush=True)
+                continue
+    except Exception as e:
+        print(f"  Gemini API error: {e}", flush=True)
+    return False
+
+
 def generate_with_google_genai(prompt: str, output_path: Path) -> bool:
     """Vertex AI Imagen 3 で画像生成（google-cloud-aiplatform 使用）"""
+    # まず Gemini API (APIキー) を試す
+    if generate_with_gemini_api(prompt, output_path):
+        return True
+
     project = os.environ.get("GOOGLE_CLOUD_PROJECT")
     if not project:
         return False
