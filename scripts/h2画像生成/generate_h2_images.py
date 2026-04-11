@@ -35,7 +35,7 @@ def load_config(kw_dir: Path) -> tuple[Path, Path, Path]:
     return html_file, prompts_file, images_dir
 
 
-def yaml_to_prompt(yaml_text: str, currency_mode: bool = True, no_money: bool = False) -> str:
+def yaml_to_prompt(yaml_text: str) -> str:
     """YAML形式のプロンプトをImagen用の英文プロンプトに変換"""
     lines = yaml_text.strip().split("\n")
     parts = []
@@ -50,28 +50,17 @@ def yaml_to_prompt(yaml_text: str, currency_mode: bool = True, no_money: bool = 
             if key and val:
                 parts.append(val)
     base = " ".join(parts)
-    prefix = (
-        "Japanese 10000 yen banknote, ten thousand yen note, highest denomination. NOT 1000 yen, NOT 5000 yen. NOT US dollar. "
-        if currency_mode
-        else ""
-    )
-    # 紙幣禁止モード: お金・紙幣を一切含めない（生成精度のため）
-    no_money_suffix = (
-        " The image must NOT contain any money, cash, banknotes, currency, paper money, coins, or bills. "
-        if no_money
-        else ""
-    )
     suffix = (
-        f"{no_money_suffix}"
+        "The image must NOT contain any money, cash, banknotes, currency, paper money, coins, bills, price tags, or payment-related items. "
+        "Do not show any text, letters, words, numbers, captions, labels, logos, watermarks, subtitles, UI text, or signage in the image. "
+        "Do not render quality badges or overlay text such as 4K, HDR, HD, UHD, or similar wording. "
         "Do not reproduce any real currency design, logos, or identifiable security features. "
         "Abstract representation only."
     )
-    # Imagen 3 高品質化: 4K, HDR, professional photography, sharp focus（公式ガイド準拠）
-    quality = "4K HDR professional photograph, sharp focus, high detail, controlled studio lighting, "
+    quality = "professional photograph, sharp focus, high detail, controlled studio lighting, "
     return (
         f"{quality}"
         f"16:9 aspect ratio. "
-        f"{prefix}"
         f"{base} "
         f"{suffix}"
     )
@@ -226,21 +215,22 @@ def main():
 
     prompts_data = yaml.safe_load(prompts_file.read_text(encoding="utf-8"))
     prompts = prompts_data["prompts"]
-    currency_mode = prompts_data.get("currency_mode", True)
 
     alt_to_src = {}
     for i, item in enumerate(prompts):
         pid = item["id"]
         alt = item["alt"]
-        item_currency = item.get("currency_mode", currency_mode)
-        no_money = not item_currency  # currency_mode: false のとき紙幣を一切含めない
-        prompt_en = yaml_to_prompt(item["yaml"], item_currency, no_money=no_money)
         output_path = images_dir / f"{pid}.png"
+        existing_jpg = images_dir / f"{pid}.jpg"
 
         print(f"\n[{i+1}/{len(prompts)}] {item['h2'][:40]}...", flush=True)
 
         success = False
-        if output_path.exists():
+        if existing_jpg.exists():
+            output_path = existing_jpg
+            print(f"  既存: {existing_jpg}", flush=True)
+            success = True
+        elif output_path.exists():
             print(f"  既存: {output_path}", flush=True)
             success = True
         elif item.get("use_fixed") and DAIKICHI_IMAGE.exists():
@@ -249,6 +239,7 @@ def main():
             success = True
             print(f"  固定画像を使用: {DAIKICHI_IMAGE.name}", flush=True)
         else:
+            prompt_en = yaml_to_prompt(item["yaml"])
             print("  Vertex AI 画像生成中...", flush=True)
             success = generate_with_google_genai(prompt_en, output_path)
 
